@@ -5,6 +5,8 @@
             required: true
         }
     })
+
+    defineEmits(['cart'])
 </script>
 
 <template>
@@ -18,7 +20,8 @@
             <p class="fw-black text-primary fs-3">${{ guitar.precio}}</p>
             <button 
                 type="button"
-                class="btn btn-dark w-100 "
+                class="btn btn-dark w-100"
+                @click="$emit('cart', guitar)"
             >Agregar al Carrito</button>
         </div>
     </div><!-- FIN GUITARRA -->
