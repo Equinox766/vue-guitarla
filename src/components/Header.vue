@@ -1,5 +1,13 @@
 <script setup>
 
+    const props = defineProps({
+        carts: {
+            type: Array,
+            required: true
+        }
+    })
+
+    defineEmits(['delete-cart-item', 'add-cart-item'])
 </script>
 
 <template>
@@ -18,37 +26,48 @@
                     <img class="img-fluid" src="/img/carrito.png" alt="imagen carrito" />
 
                     <div id="carrito" class="bg-white p-3">
-                        <p class="text-center">El carrito esta vacio</p>
-                        <table class="w-100 table">
-                            <thead>
-                                <tr>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
+                        <p v-if="carts.length === 0" class="text-center m-0">
+                            El carrito esta vacio
+                        </p>
+                        <div v-else>
+                            <table v-if="carts.length > 0" class="w-100 table">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
                                     <th>Cantidad</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr
+                                    v-for="product in carts"
+                                >
                                     <td>
-                                        <img class="img-fluid" src="/img/guitarra_02.jpg" alt="imagen guitarra">
+                                        <img 
+                                            class="img-fluid" 
+                                            :src="'/img/'+ product.imagen +'.jpg'" 
+                                            :alt="'imagen guitarra'+product.nombre"
+                                        >
                                     </td>
-                                    <td>SRV</td>
+                                    <td>{{ product.nombre }}</td>
                                     <td class="fw-bold">
-                                            $299
+                                            ${{ product.precio }}
                                     </td>
                                     <td class="flex align-items-start gap-4">
                                         <button
                                             type="button"
                                             class="btn btn-dark"
+                                            @click="$emit('delete-cart-item')"
                                         >
                                             -
                                         </button>
-                                            1
+                                        {{ product.cant }}
                                         <button
                                             type="button"
                                             class="btn btn-dark"
+                                            @click="$emit('add-cart-item')"
                                         >
                                             +
                                         </button>
@@ -58,20 +77,20 @@
                                             class="btn btn-danger"
                                             type="button"
                                         >
-                                            X
-                                        </button>
-                                    </td>
+                                        X
+                                    </button>
+                                </td>
                                 </tr>
                             </tbody>
-                        </table>
-
-                        <p class="text-end">Total pagar: <span class="fw-bold">$899</span></p>
-                        <button class="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                            </table>
+                            <p class="text-end">Total pagar: <span class="fw-bold">$899</span></p>
+                            <button class="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                        </div>
                     </div>
                 </div>
             </nav>
         </div><!--.row-->
-
+        
         <div class="row mt-5">
             <div class="col-md-6 text-center text-md-start pt-5">
                 <h1 class="display-2 fw-bold">Modelo VAI</h1>
