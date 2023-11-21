@@ -4,10 +4,14 @@
         carts: {
             type: Array,
             required: true
+        },
+        guitar: {
+            type: Object,
+            required: true
         }
     })
 
-    defineEmits(['delete-cart-item', 'add-cart-item'])
+    defineEmits(['delete-cart-item', 'add-cart-item', 'cart'])
 </script>
 
 <template>
@@ -59,7 +63,7 @@
                                         <button
                                             type="button"
                                             class="btn btn-dark"
-                                            @click="$emit('delete-cart-item')"
+                                            @click="$emit('delete-cart-item', product.id)"
                                         >
                                             -
                                         </button>
@@ -67,7 +71,7 @@
                                         <button
                                             type="button"
                                             class="btn btn-dark"
-                                            @click="$emit('add-cart-item')"
+                                            @click="$emit('add-cart-item', product.id)"
                                         >
                                             +
                                         </button>
@@ -93,16 +97,17 @@
         
         <div class="row mt-5">
             <div class="col-md-6 text-center text-md-start pt-5">
-                <h1 class="display-2 fw-bold">Modelo VAI</h1>
-                <p class="mt-5 fs-5 text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, possimus quibusdam dolor nemo velit quo, fuga omnis, iure molestias optio tempore sint at ipsa dolorum odio exercitationem eos inventore odit.</p>
-                <p class="text-primary fs-1 fw-black">$399</p>
+                <h1 class="display-2 fw-bold">{{ guitar.nombre }}</h1>
+                <p class="mt-5 fs-5 text-white">{{ guitar.descripcion }}</p>
+                <p class="text-primary fs-1 fw-black">$ {{ guitar.precio }}</p>
                 <button 
                     type="button"
                     class="btn fs-4 bg-primary text-white py-2 px-5"
+                    @click="$emit('cart', guitar)"
                 >Agregar al Carrito</button>
             </div>
         </div>
     </div>
-        <img class="header-guitarra" src="/img/header_guitarra.png" alt="imagen header">
+        <img class="" src="/img/header_guitarra.png" alt="imagen header">
     </header>
 </template>

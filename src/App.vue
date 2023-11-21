@@ -6,10 +6,12 @@
   import Footer from './components/Footer.vue';
 
   const guitars = ref([]);
-  const carts = ref([]);
+  const carts   = ref([]);
+  const guitar  = ref([]);
 
   onMounted(() => {
-    guitars.value = db
+    guitars.value = db,
+    guitar.value  = db[3]
   })
 
   const cart = (guitar) => {
@@ -23,19 +25,25 @@
     }
   }
 
-  const deleteCartItem = () => {
-    console.log('delete');
+  const deleteCartItem = (id) => {
+    const index = carts.value.findIndex(product => product.id === id)
+    if (carts.value[index].cant <= 1) return
+    carts.value[index].cant--;
   }
 
-  const addCartItem = () => {
-    console.log('add');
+  const addCartItem = (id) => {
+    const index = carts.value.findIndex(product => product.id === id)
+    if (carts.value[index].cant >= 5) return
+    carts.value[index].cant++;
   }
 </script>
 
 <template>
     <Header 
         :carts="carts"
+        :guitar="guitar"
         @delete-cart-item="deleteCartItem"
+        @cart="cart"
         @add-cart-item="addCartItem"
     />
         <main class="container-xl mt-5">
