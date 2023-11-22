@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from '@vue/reactivity';
 
     const props = defineProps({
         carts: {
@@ -11,7 +12,11 @@
         }
     })
 
-    defineEmits(['delete-cart-item', 'add-cart-item', 'cart'])
+    defineEmits(['delete-cart-item', 'add-cart-item', 'cart', 'delete-products', 'clean-cart'])
+
+    const totalPagar = computed(() => {
+        return props.carts.reduce((total, product) => total + (product.cant * product.precio), 0)
+    })
 </script>
 
 <template>
@@ -47,6 +52,7 @@
                             <tbody>
                                 <tr
                                     v-for="product in carts"
+                                    :key="product.id"
                                 >
                                     <td>
                                         <img 
@@ -80,6 +86,7 @@
                                         <button
                                             class="btn btn-danger"
                                             type="button"
+                                            @click="$emit('delete-products', product.id)"
                                         >
                                         X
                                     </button>
@@ -87,8 +94,13 @@
                                 </tr>
                             </tbody>
                             </table>
-                            <p class="text-end">Total pagar: <span class="fw-bold">$899</span></p>
-                            <button class="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                            <p class="text-end">Total pagar: <span class="fw-bold">${{ totalPagar }}</span></p>
+                            <button 
+                                class="btn btn-dark w-100 mt-3 p-2"
+                                @click="$emit('clean-cart')"
+                            >
+                                Vaciar Carrito
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -108,6 +120,6 @@
             </div>
         </div>
     </div>
-        <img class="" src="/img/header_guitarra.png" alt="imagen header">
+        <img class="header-guitarra" src="/img/header_guitarra.png" alt="imagen header">
     </header>
 </template>
